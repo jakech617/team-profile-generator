@@ -1,4 +1,4 @@
-# Tean Profile Generator
+# Team Profile Generator
 
 ## Table of Contents
 * [1. Demo](#demo)
