@@ -4,6 +4,7 @@ const inquirer = require('inquirer');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
+
 employeeArray = [];
 
 const init = () => {
@@ -150,3 +151,76 @@ const newIntern = () => {
         newMember();
     });
 };
+
+const generateTeam = () => {
+
+    const newArray = []
+    const html1 = 
+`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>${employeeArray[0]}</title>
+</head>
+<body>
+    <div>
+        <h1 class="logo">${employeeArray[0]}</h1>
+    </div>
+    <div class="card-container">
+    `
+    newArray.push(html1);
+
+    for (i = 1; i < employeeArray.length; i++) {
+        let output = `
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h2 class="card-title">${employeeArray[i].name}</h2>
+                <h2 class="card-subtitle mb-2 text-muted">${employeeArray[i].title}</h2>
+            </div>
+            <div class="card-bottom">
+                <p class="card-text">ID: ${employeeArray[i].id}</p>
+                <p class="card-text">Email: <a class="card-link" href="mailto:${employeeArray[i].email}">${employeeArray[i].email}</a></p>
+        `
+        if (employeeArray[i].officeNumber) {
+            output += `
+            <p>${employeeArray[i].officeNumber}</p>
+            `
+        }
+        if (employeeArray[i].github) {
+            output += `
+            <p>GitHub: <a href="https://github.com/${employeeArray[i].github}">${employeeArray[i].github}</a></p>
+            `
+        }
+        if (employeeArray[i].school) {
+            output += `
+            <p>School: ${employeeArray[i].school}</p>
+            `
+        }
+        output += `
+        </div>
+        </div>
+        `
+        newArray.push(output)
+    }
+
+    const html2 = `
+    </div>
+    </body>
+    </html>
+    `
+    newArray.push(html2);
+
+    fs.writeFile('./dist/index.html', newArray.join(""), function (err) {
+        if (err) throw err
+        else {
+            console.log("Team Generated");
+            console.log('Success');
+        }
+    })
+}
+
+init();
